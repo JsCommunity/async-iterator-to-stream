@@ -38,8 +38,8 @@ const getSymbol =
     }
     : name => `@@${name}`
 
-const $$asyncIterator = getSymbol('asyncIterator')
-const $$iterator = getSymbol('iterator')
+const $$asyncIterator = asyncIteratorToStream.$$asyncIterator = getSymbol('asyncIterator')
+const $$iterator = asyncIteratorToStream.$$iterator = getSymbol('iterator')
 
 const resolveToIterator = value => {
   let tmp
