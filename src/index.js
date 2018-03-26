@@ -61,7 +61,7 @@ const resolveToIterator = value => {
 //
 // `yield` returns the `size` parameter of the next method, the generator can
 // ask for it without generating a value by yielding `undefined`.
-module.exports = function asyncIteratorToStream (iterable, options) {
+function asyncIteratorToStream (iterable, options) {
   if (typeof iterable === 'function') {
     return function () {
       return asyncIteratorToStream(iterable.apply(this, arguments), options)
@@ -117,3 +117,9 @@ module.exports = function asyncIteratorToStream (iterable, options) {
   }
   return readable
 }
+module.exports = asyncIteratorToStream
+
+asyncIteratorToStream.obj = (iterable, options) => asyncIteratorToStream(iterable, {
+  objectMode: true,
+  ...options,
+})
