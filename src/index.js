@@ -44,7 +44,7 @@ const $$iterator = asyncIteratorToStream.$$iterator = getSymbol('iterator')
 const resolveToIterator = value => {
   let tmp
   if (typeof (tmp = value[$$asyncIterator]) === 'function') {
-    return tmp.call(value)() // async iterable
+    return tmp.call(value) // async iterable
   }
   if (typeof (tmp = value[$$iterator]) === 'function') {
     return tmp.call(value) // iterable
