@@ -68,6 +68,13 @@ function asyncIteratorToStream (iterable, options) {
     }
   }
 
+  const { then } = iterable
+  if (typeof then === 'function') {
+    return then.call(iterable, iterable =>
+      asyncIteratorToStream(iterable, options)
+    )
+  }
+
   const iterator = resolveToIterator(iterable)
   const readable = options instanceof Readable ? options : new Readable(options)
   readable._destroy = async (error, cb) => {
