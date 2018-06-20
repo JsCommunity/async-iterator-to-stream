@@ -108,7 +108,7 @@ function asyncIteratorToStream (iterable, options) {
           }
         } while (canPush)
       } catch (error) {
-        readable.emit('error', error)
+        process.nextTick(readable.emit.bind(readable, 'error', error))
       } finally {
         running = false
       }
