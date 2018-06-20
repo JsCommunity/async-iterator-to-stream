@@ -25,9 +25,6 @@
   "files": [
     "dist/"
   ],
-  "browserslist": [
-    ">2%"
-  ],
   "engines": {
     "node": ">=4"
   },
