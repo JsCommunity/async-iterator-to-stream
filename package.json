@@ -32,22 +32,22 @@
     "readable-stream": "^2.3.5"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.42",
-    "@babel/core": "^7.0.0-beta.42",
-    "@babel/preset-env": "^7.0.0-beta.42",
+    "@babel/cli": "7.0.0-beta.52",
+    "@babel/core": "7.0.0-beta.52",
+    "@babel/preset-env": "7.0.0-beta.52",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^8.2.2",
-    "babel-jest": "^21",
+    "babel-jest": "^23.2.0",
     "babel-plugin-lodash": "^3.3.2",
     "cross-env": "^5.1.4",
-    "eslint": "^4.19.1",
+    "eslint": "^5.1.0",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1",
     "husky": "^0.14.3",
-    "jest": "^21",
+    "jest": "^23.3.0",
     "rimraf": "^2.6.2"
   },
   "scripts": {
