@@ -1,6 +1,6 @@
 {
   "name": "async-iterator-to-stream",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "ISC",
   "description": "Convert an async iterator/iterable to a readable stream",
   "keywords": [
