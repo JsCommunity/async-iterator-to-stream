@@ -1,35 +1,5 @@
 const { Readable } = require('readable-stream')
 
-// return the next value of the iterator but if it is a promise, resolve it and
-// reinject it
-//
-// this enables the use of a simple generator instead of an async generator
-// (which are less widely supported)
-const next = async (iterator, arg) => {
-  let cursor = iterator.next(arg)
-  if (typeof cursor.then === 'function') {
-    return cursor
-  }
-  let value
-  while (
-    !cursor.done &&
-    (value = cursor.value) != null &&
-    typeof value.then === 'function'
-  ) {
-    let success = false
-    try {
-      value = await value
-      success = true
-    } catch (error) {
-      cursor = iterator.throw(error)
-    }
-    if (success) {
-      cursor = iterator.next(value)
-    }
-  }
-  return cursor
-}
-
 const getSymbol =
   typeof Symbol === 'function'
     ? name => {
@@ -97,32 +67,53 @@ function asyncIteratorToStream (iterable, options) {
     }
     cb(error)
   }
-  readable._read = size => {
-    let running = false
-    const read = (readable._read = async size => {
-      if (running) {
-        return
-      }
-      running = true
-      try {
-        let canPush = true
-        do {
-          const cursor = await next(iterator, size)
-          if (cursor.done) {
-            return readable.push(null)
+  let running = false
+  readable._read = async size => {
+    if (running) {
+      return
+    }
+    running = true
+    try {
+      let value
+      do {
+        let cursor = iterator.next(size)
+
+        // return the next value of the iterator but if it is a promise, resolve it and
+        // reinject it
+        //
+        // this enables the use of a simple generator instead of an async generator
+        // (which are less widely supported)
+        if (typeof cursor.then === 'function') {
+          cursor = await cursor
+        } else {
+          while (
+            !cursor.done &&
+            (value = cursor.value) != null &&
+            typeof value.then === 'function'
+          ) {
+            let success = false
+            try {
+              value = await value
+              success = true
+            } catch (error) {
+              cursor = iterator.throw(error)
+            }
+            if (success) {
+              cursor = iterator.next(value)
+            }
           }
-          const value = cursor.value
-          if (value !== undefined) {
-            canPush = readable.push(value)
-          }
-        } while (canPush)
-      } catch (error) {
-        process.nextTick(readable.emit.bind(readable, 'error', error))
-      } finally {
-        running = false
-      }
-    })
-    return read(size)
+        }
+
+        if (cursor.done) {
+          return readable.push(null)
+        }
+        value = cursor.value
+      } while (value === undefined || readable.push(value))
+    } catch (error) {
+      process.nextTick(readable.emit.bind(readable, 'error', error))
+    } finally {
+      running = false
+    }
   }
   return readable
 }
