@@ -78,19 +78,19 @@ createReadStream('foo.txt').pipe(process.stdout)
 
 ```
 # Install dependencies
-> yarn
+> npm
 
 # Run the tests
-> yarn test
+> npm test
 
 # Continuously compile
-> yarn dev
+> npm run dev
 
 # Continuously run the tests
-> yarn dev-test
+> npm run dev-test
 
 # Build for production
-> yarn build
+> npm run build
 ```
 
 ## Contributions
