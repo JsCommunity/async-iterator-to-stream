@@ -37,7 +37,6 @@
     "@babel/core": "^7.0.0-beta.42",
     "@babel/plugin-transform-runtime": "^7.0.0-beta.42",
     "@babel/preset-env": "^7.0.0-beta.42",
-    "@babel/preset-flow": "^7.0.0-beta.42",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^8.2.2",
     "babel-jest": "^21",
@@ -49,7 +48,6 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1",
-    "flow-bin": "^0.68.0",
     "husky": "^0.14.3",
     "jest": "^21",
     "rimraf": "^2.6.2"
@@ -60,12 +58,11 @@
     "commitmsg": "npm test",
     "dev": "cross-env NODE_ENV=development babel --watch --source-maps --out-dir=dist/ src/",
     "dev-test": "jest --bail --watch",
-    "posttest": "jest",
     "prebuild": "npm run clean",
     "predev": "npm run prebuild",
     "prepublishOnly": "npm run build",
     "pretest": "eslint --ignore-path .gitignore --fix .",
-    "test": "flow status"
+    "test": "jest"
   },
   "jest": {
     "collectCoverage": true,
