@@ -61,7 +61,7 @@
     "prebuild": "npm run clean",
     "predev": "npm run prebuild",
     "prepublishOnly": "npm run build",
-    "pretest": "eslint --ignore-path .gitignore --fix .",
+    "pretest": "eslint --ignore-path .gitignore .",
     "test": "jest"
   },
   "jest": {
