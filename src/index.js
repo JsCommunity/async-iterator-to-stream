@@ -38,8 +38,10 @@ const getSymbol =
     }
     : name => `@@${name}`
 
-const $$asyncIterator = asyncIteratorToStream.$$asyncIterator = getSymbol('asyncIterator')
-const $$iterator = asyncIteratorToStream.$$iterator = getSymbol('iterator')
+const $$asyncIterator = (asyncIteratorToStream.$$asyncIterator = getSymbol(
+  'asyncIterator'
+))
+const $$iterator = (asyncIteratorToStream.$$iterator = getSymbol('iterator'))
 
 const resolveToIterator = value => {
   let tmp
@@ -126,7 +128,8 @@ function asyncIteratorToStream (iterable, options) {
 }
 module.exports = asyncIteratorToStream
 
-asyncIteratorToStream.obj = (iterable, options) => asyncIteratorToStream(iterable, {
-  objectMode: true,
-  ...options,
-})
+asyncIteratorToStream.obj = (iterable, options) =>
+  asyncIteratorToStream(iterable, {
+    objectMode: true,
+    ...options,
+  })
