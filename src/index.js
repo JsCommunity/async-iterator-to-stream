@@ -48,24 +48,17 @@ function asyncIteratorToStream (iterable, options) {
   }
 
   const iterator = resolveToIterator(iterable)
+  const isGenerator = 'return' in iterator
   const readable = options instanceof Readable ? options : new Readable(options)
-  readable._destroy = async (error, cb) => {
-    if (error != null) {
-      if ('throw' in iterator) {
-        try {
-          await iterator.throw(error)
-        } catch (error) {
-          return cb(error)
-        }
-      }
-    } else if ('return' in iterator) {
+  if (isGenerator) {
+    readable._destroy = async (error, cb) => {
       try {
-        await iterator.return()
+        await (error != null ? iterator.throw(error) : iterator.return())
       } catch (error) {
-        cb(error)
+        return cb(error)
       }
+      cb(error)
     }
-    cb(error)
   }
   let running = false
   readable._read = async size => {
