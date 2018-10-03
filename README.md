@@ -18,25 +18,22 @@ Installation of the [npm package](https://npmjs.org/package/async-iterator-to-st
 ## Usage
 
 ```js
-const asyncIteratorToStream = require('async-iterator-to-stream')
+const asyncIteratorToStream = require("async-iterator-to-stream");
 
 // sync/async iterators
-asyncIteratorToStream(new Set(['foo', 'bar']).values())
-  .pipe(output)
+asyncIteratorToStream(new Set(["foo", "bar"]).values()).pipe(output);
 
 // sync/async iterables
-asyncIteratorToStream.obj([1, 2, 3])
-  .pipe(output)
+asyncIteratorToStream.obj([1, 2, 3]).pipe(output);
 
 // if you pass a sync/async generator, it will return a factory instead of a
 // stream
-const createRangeStream = asyncIteratorToStream.obj(function * (n) {
+const createRangeStream = asyncIteratorToStream.obj(function*(n) {
   for (let i = 0; i < n; ++i) {
-    yield i
+    yield i;
   }
-})
-createRangeStream(10)
-  .pipe(output)
+});
+createRangeStream(10).pipe(output);
 ```
 
 ## Example
@@ -45,30 +42,30 @@ Let's implement a simpler `fs.createReadStream` to illustrate the usage of this
 library.
 
 ```js
-const asyncIteratorToStream = require('async-iterator-to-stream')
+const asyncIteratorToStream = require("async-iterator-to-stream");
 
 // promisified fs
-const fs = require('mz/fs')
+const fs = require("mz/fs");
 
-const createReadStream = asyncIteratorToStream(async function * (file) {
-  const fd = await fs.open(file, 'r')
+const createReadStream = asyncIteratorToStream(async function*(file) {
+  const fd = await fs.open(file, "r");
   try {
-    let size = yield
+    let size = yield;
     while (true) {
-      const buf = Buffer.alloc(size)
-      const [n] = await fs.read(fd, buf, 0, size, null)
+      const buf = Buffer.alloc(size);
+      const [n] = await fs.read(fd, buf, 0, size, null);
       if (n < size) {
-        yield buf.slice(0, n)
-        return
+        yield buf.slice(0, n);
+        return;
       }
-      size = yield buf
+      size = yield buf;
     }
   } finally {
-    await fs.close(fd)
+    await fs.close(fd);
   }
-})
+});
 
-createReadStream('foo.txt').pipe(process.stdout)
+createReadStream("foo.txt").pipe(process.stdout);
 ```
 
 > If your environment does not support async generators, you may use a sync
@@ -95,7 +92,7 @@ createReadStream('foo.txt').pipe(process.stdout)
 
 ## Contributions
 
-Contributions are *very* welcomed, either on the documentation or on
+Contributions are _very_ welcomed, either on the documentation or on
 the code.
 
 You may:

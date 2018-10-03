@@ -29,31 +29,32 @@
     "node": ">=6"
   },
   "dependencies": {
-    "readable-stream": "^2.3.5"
+    "readable-stream": "^3.0.5"
   },
   "devDependencies": {
-    "@babel/cli": "7.0.0-beta.52",
-    "@babel/core": "7.0.0-beta.52",
-    "@babel/preset-env": "7.0.0-beta.52",
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-eslint": "^8.2.2",
+    "babel-eslint": "^10.0.1",
     "babel-jest": "^23.2.0",
     "babel-plugin-lodash": "^3.3.2",
     "cross-env": "^5.1.4",
-    "eslint": "^5.1.0",
-    "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.9.0",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "husky": "^0.14.3",
+    "eslint": "^5.9.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "husky": "^1.1.0",
     "jest": "^23.3.0",
+    "prettier": "^1.15.2",
     "rimraf": "^2.6.2"
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production babel --source-maps --out-dir=dist/ src/",
     "clean": "rimraf dist/",
-    "commitmsg": "npm test",
     "dev": "cross-env NODE_ENV=development babel --watch --source-maps --out-dir=dist/ src/",
     "dev-test": "jest --bail --watch",
     "prebuild": "npm run clean",
@@ -61,6 +62,11 @@
     "prepublishOnly": "npm run build",
     "pretest": "eslint --ignore-path .gitignore .",
     "test": "jest"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "npm test"
+    }
   },
   "jest": {
     "collectCoverage": true,

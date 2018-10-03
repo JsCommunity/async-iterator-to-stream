@@ -1,28 +1,28 @@
-const { Readable } = require('readable-stream')
+const { Readable } = require("readable-stream");
 
 const getSymbol =
-  typeof Symbol === 'function'
+  typeof Symbol === "function"
     ? name => {
-      const symbol = Symbol[name]
-      return symbol !== undefined ? symbol : `@@${name}`
-    }
-    : name => `@@${name}`
+        const symbol = Symbol[name];
+        return symbol !== undefined ? symbol : `@@${name}`;
+      }
+    : name => `@@${name}`;
 
 const $$asyncIterator = (asyncIteratorToStream.$$asyncIterator = getSymbol(
-  'asyncIterator'
-))
-const $$iterator = (asyncIteratorToStream.$$iterator = getSymbol('iterator'))
+  "asyncIterator"
+));
+const $$iterator = (asyncIteratorToStream.$$iterator = getSymbol("iterator"));
 
 const resolveToIterator = value => {
-  let tmp
-  if (typeof (tmp = value[$$asyncIterator]) === 'function') {
-    return tmp.call(value) // async iterable
+  let tmp;
+  if (typeof (tmp = value[$$asyncIterator]) === "function") {
+    return tmp.call(value); // async iterable
   }
-  if (typeof (tmp = value[$$iterator]) === 'function') {
-    return tmp.call(value) // iterable
+  if (typeof (tmp = value[$$iterator]) === "function") {
+    return tmp.call(value); // iterable
   }
-  return value // iterator
-}
+  return value; // iterator
+};
 
 // Create a readable stream from a sync/async iterator
 //
@@ -33,87 +33,88 @@ const resolveToIterator = value => {
 //
 // `yield` returns the `size` parameter of the next method, the generator can
 // ask for it without generating a value by yielding `undefined`.
-function asyncIteratorToStream (iterable, options) {
-  if (typeof iterable === 'function') {
-    return function () {
-      return asyncIteratorToStream(iterable.apply(this, arguments), options)
-    }
+function asyncIteratorToStream(iterable, options) {
+  if (typeof iterable === "function") {
+    return function() {
+      return asyncIteratorToStream(iterable.apply(this, arguments), options);
+    };
   }
 
-  const { then } = iterable
-  if (typeof then === 'function') {
+  const { then } = iterable;
+  if (typeof then === "function") {
     return then.call(iterable, iterable =>
       asyncIteratorToStream(iterable, options)
-    )
+    );
   }
 
-  const iterator = resolveToIterator(iterable)
-  const isGenerator = 'return' in iterator
-  const readable = options instanceof Readable ? options : new Readable(options)
+  const iterator = resolveToIterator(iterable);
+  const isGenerator = "return" in iterator;
+  const readable =
+    options instanceof Readable ? options : new Readable(options);
   if (isGenerator) {
     readable._destroy = async (error, cb) => {
       try {
-        await (error != null ? iterator.throw(error) : iterator.return())
+        await (error != null ? iterator.throw(error) : iterator.return());
       } catch (error) {
-        return cb(error)
+        return cb(error);
       }
-      cb(error)
-    }
+      cb(error);
+    };
   }
-  let running = false
+  let running = false;
   readable._read = async size => {
     if (running) {
-      return
+      return;
     }
-    running = true
+    running = true;
     try {
-      let value
+      let value;
       do {
-        let cursor = iterator.next(size)
+        let cursor = iterator.next(size);
 
         // return the next value of the iterator but if it is a promise, resolve it and
         // reinject it
         //
         // this enables the use of a simple generator instead of an async generator
         // (which are less widely supported)
-        if (typeof cursor.then === 'function') {
-          cursor = await cursor
+        if (typeof cursor.then === "function") {
+          cursor = await cursor;
         } else {
           while (
             !cursor.done &&
             (value = cursor.value) != null &&
-            typeof value.then === 'function'
+            typeof value.then === "function"
           ) {
-            let success = false
+            let success = false;
             try {
-              value = await value
-              success = true
+              value = await value;
+              success = true;
             } catch (error) {
-              cursor = iterator.throw(error)
+              cursor = iterator.throw(error);
             }
             if (success) {
-              cursor = iterator.next(value)
+              cursor = iterator.next(value);
             }
           }
         }
 
         if (cursor.done) {
-          return readable.push(null)
+          return readable.push(null);
         }
-        value = cursor.value
-      } while (value === undefined || readable.push(value))
+        value = cursor.value;
+      } while (value === undefined || readable.push(value));
     } catch (error) {
-      process.nextTick(readable.emit.bind(readable, 'error', error))
+      process.nextTick(readable.emit.bind(readable, "error", error));
     } finally {
-      running = false
+      running = false;
     }
-  }
-  return readable
+  };
+  return readable;
 }
-module.exports = asyncIteratorToStream
+module.exports = asyncIteratorToStream;
 
 asyncIteratorToStream.obj = (iterable, options) =>
   asyncIteratorToStream(iterable, {
     objectMode: true,
     ...options,
-  })
+  });

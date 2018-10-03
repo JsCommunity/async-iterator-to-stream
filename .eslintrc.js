@@ -1,13 +1,22 @@
 module.exports = {
-  extends: ['standard'],
-  parser: 'babel-eslint',
+  env: { es6: true },
+
+  // use standard configuration and disable rules handled by prettier
+  extends: ["standard", "prettier"],
+
   rules: {
-    'comma-dangle': ['error', 'always-multiline'],
-    'no-var': 'error',
-    'node/no-extraneous-import': 'error',
-    'node/no-extraneous-require': 'error',
-    'node/no-missing-require': 'error',
-    'node/no-missing-import': 'error',
-    'prefer-const': 'error',
+    // prefer let/const over var
+    "no-var": "error",
+
+    // prefer const over let when possible
+    //
+    // should be included in standard: https://github.com/standard/eslint-config-standard/pull/133/
+    "prefer-const": "error",
+
+    // detect incorrect import/require
+    "node/no-extraneous-import": "error",
+    "node/no-extraneous-require": "error",
+    "node/no-missing-require": "error",
+    "node/no-missing-import": "error",
   },
-}
+};
