@@ -85,16 +85,13 @@ function asyncIteratorToStream(iterable, options) {
             (value = cursor.value) != null &&
             typeof value.then === "function"
           ) {
-            let success = false;
             try {
               value = await value;
-              success = true;
             } catch (error) {
               cursor = iterator.throw(error);
+              continue
             }
-            if (success) {
-              cursor = iterator.next(value);
-            }
+            cursor = iterator.next(value);
           }
         }
 
