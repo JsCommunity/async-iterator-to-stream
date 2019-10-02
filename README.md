@@ -1,4 +1,6 @@
-# async-iterator-to-stream [![Build Status](https://travis-ci.org/JsCommunity/async-iterator-to-stream.png?branch=master)](https://travis-ci.org/JsCommunity/async-iterator-to-stream)
+# async-iterator-to-stream
+
+[![Package Version](https://badgen.net/npm/v/async-iterator-to-stream)](https://npmjs.org/package/async-iterator-to-stream) [![Build Status](https://travis-ci.org/JsCommunity/async-iterator-to-stream.png?branch=master)](https://travis-ci.org/JsCommunity/async-iterator-to-stream) [![PackagePhobia](https://badgen.net/packagephobia/install/async-iterator-to-stream)](https://packagephobia.now.sh/result?p=async-iterator-to-stream) [![Latest Commit](https://badgen.net/github/last-commit/JsCommunity/async-iterator-to-stream)](https://github.com/JsCommunity/async-iterator-to-stream/commits/master)
 
 > Convert an async iterator/iterable to a readable stream
 
