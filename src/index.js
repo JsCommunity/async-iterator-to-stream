@@ -89,7 +89,7 @@ function asyncIteratorToStream(iterable, options) {
               value = await value;
             } catch (error) {
               cursor = iterator.throw(error);
-              continue
+              continue;
             }
             cursor = iterator.next(value);
           }

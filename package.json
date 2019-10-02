@@ -35,22 +35,21 @@
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
-    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
-    "babel-jest": "^23.2.0",
-    "babel-plugin-lodash": "^3.3.2",
-    "cross-env": "^5.1.4",
-    "eslint": "^5.9.0",
-    "eslint-config-prettier": "^3.3.0",
-    "eslint-config-standard": "^12.0.0",
+    "babel-jest": "^24.9.0",
+    "cross-env": "^6.0.2",
+    "eslint": "^6.5.1",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
-    "husky": "^1.1.0",
-    "jest": "^23.3.0",
+    "husky": "^3.0.8",
+    "jest": "^24.9.0",
+    "lint-staged": "^9.4.1",
     "prettier": "^1.15.2",
-    "rimraf": "^2.6.2"
+    "rimraf": "^3.0.0"
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production babel --source-maps --out-dir=dist/ src/",
@@ -65,15 +64,15 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "npm test"
+      "pre-commit": "lint-staged"
     }
   },
-  "jest": {
-    "collectCoverage": true,
-    "testEnvironment": "node",
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "testRegex": "\\.spec\\.js$"
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "git add",
+      "eslint --ignore-pattern '!*'",
+      "jest --findRelatedTests --passWithNoTests"
+    ]
   }
 }
